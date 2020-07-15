@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import Task from "./components/Task";
+import CreateTask from "./components/CreateTask";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+
+state = {
+  newTask: "",
+  todos: [
+  
+  {text: 'React.js'},
+  {text: 'Vue.js'},
+  {text: 'Angular.js'},
+  {text: 'Node.js'}
+
+]
+}
+//bind function
+completeTask = (index)=>{
+//copy item array
+const todos = [...this.state.todos];
+todos.splice(index, 1);
+this.setState({
+todos
+});
+}
+
+//bind function
+addTask = ()=>{
+  const todos = [...this.state.todos];
+  todos.push({
+ text: this.state.newTask
+  });
+  this.setState({
+    todos,
+    newTask: ''
+    });    
+} 
+
+//bind function 
+updateNewTask = (event)=>{
+  
+  this.setState({
+    newTask: event.target.value
+    });
+}
+
+  render() {
+    return (
+      <div className="App">
+       {this.state.todos.map((todo, index) => <Task todo={todo} completeTask={()=>this.completeTask(index)} index={index} key={index} />)} 
+      <CreateTask value={this.state.newTask} onChange={this.updateNewTask} addTask={this.addTask} />
+      </div>
+    );
+  }
 }
 
 export default App;
